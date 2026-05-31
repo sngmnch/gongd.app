@@ -2,12 +2,15 @@
   "name": "science-shuttle-app",
   "version": "1.0.0",
   "description": "대전 교육격차 분석 및 과학 셔틀 예약 앱",
+  "homepage": "https://sngmnch.github.io/-.app",
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "axios": "^1.6.0",
@@ -36,5 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
