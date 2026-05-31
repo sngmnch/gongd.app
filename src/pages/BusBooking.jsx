@@ -12,12 +12,32 @@ function BusBooking() {
     setApplications(saved);
   }, []);
 
-  // 24시간 뒤에 결과 확정
+  // 버스 노선 데이터 생성 (픽업지 → 프로그램 위치)
+  const generateBusRoutes = (pickupSchool, programLocation) => {
+    const routes = [
+      { name: `${pickupSchool} → ${programLocation}`, time: '09:00', distance: '약 5km' },
+      { name: `${pickupSchool} → 환승지점 → ${programLocation}`, time: '08:45', distance: '약 7km' },
+      { name: `${pickupSchool} → 중간 경유지 → ${programLocation}`, time: '09:15', distance: '약 6km' },
+    ];
+    return routes;
+  };
+
+  // 신청 인원 계산
+  const getApplicationCount = (programId) => {
+    return applications.filter(app => app.appliedProgram?.id === programId).length;
+  };
+
+  // 즉시 결과 확정
   const confirmResult = (index) => {
     const updated = [...applications];
     updated[index].status = 'confirmed';
     updated[index].shuttleTime = '09:00';
-    updated[index].pickupLocation = updated[index].school;
+    updated[index].pickupLocation = updated[index].selectedPickupSchool || updated[index].school;
+    updated[index].busRoutes = generateBusRoutes(
+      updated[index].selectedPickupSchool || updated[index].school,
+      updated[index].appliedProgram.location
+    );
+    updated[index].totalApplications = getApplicationCount(updated[index].appliedProgram.id);
     setApplications(updated);
     localStorage.setItem('shuttleApplications', JSON.stringify(updated));
   };
@@ -64,15 +84,16 @@ function BusBooking() {
                   {/* 상태별 UI */}
                   {app.status === 'pending' ? (
                     <div className="pending-state">
-                      <div className="timer">
-                        <p style={{ color: '#2196f3', fontWeight: 'bold', marginBottom: '10px', fontSize: '1.1em' }}>
-                          ⏱️ 결과 발표까지의 남은 시간
-                        </p>
-                        <CountdownTimer appliedAt={app.appliedAt} onTimeUp={() => confirmResult(index)} />
-                      </div>
-                      <p className="info-text">
-                        🤖 AI 알고리즘이 최적의 셔틀을 매칭 중입니다...
+                      <p className="info-text" style={{ marginBottom: '15px' }}>
+                        🤖 AI 알고리즘이 최적의 셔틀을 매칭했습니다!
                       </p>
+                      <button
+                        className="btn-primary"
+                        onClick={() => confirmResult(index)}
+                        style={{ width: '100%', marginBottom: '15px', padding: '12px', fontSize: '1em' }}
+                      >
+                        ✨ 배정 결과 확인하기
+                      </button>
                     </div>
                   ) : (
                     <div className="confirmed-state">
@@ -99,11 +120,34 @@ function BusBooking() {
                             <strong>📞 연락처</strong><br/>
                             {app.studentPhone}
                           </p>
+                          <p style={{ margin: '8px 0', fontSize: '1em' }}>
+                            <strong>👥 이 프로그램 신청 인원</strong><br/>
+                            총 {app.totalApplications || 1}명
+                          </p>
                         </div>
                       </div>
+
+                      {/* 버스 노선 */}
+                      <div style={{ background: '#e8f5e9', padding: '15px', borderRadius: '8px', marginBottom: '15px', border: '1px solid #4caf50' }}>
+                        <h4 style={{ margin: '0 0 12px 0', color: '#2e7d32', fontSize: '1.1em' }}>🚌 셔틀 노선 (3가지)</h4>
+                        {app.busRoutes && app.busRoutes.map((route, idx) => (
+                          <div key={idx} style={{ background: 'white', padding: '10px', borderRadius: '6px', marginBottom: '8px', borderLeft: '4px solid #4caf50' }}>
+                            <p style={{ margin: '4px 0', fontSize: '0.95em', fontWeight: '600', color: '#333' }}>
+                              {idx === 0 ? '⭐ 권장 노선' : `${idx}번 노선`} | {route.time} 출발
+                            </p>
+                            <p style={{ margin: '4px 0', fontSize: '0.9em', color: '#666' }}>
+                              {route.name}
+                            </p>
+                            <p style={{ margin: '4px 0', fontSize: '0.85em', color: '#999' }}>
+                              거리: {route.distance}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+
                       <div className="reminder-box" style={{ background: '#fff3cd', padding: '12px', borderRadius: '8px', border: '1px solid #ffc107', color: '#333' }}>
-                        ⏰ 신청하신 시간에 {app.selectedPickupSchool || app.pickupLocation}에서 대기해주세요!<br/>
-                        📍 정확한 픽업 위치는 며칠 전에 안내됩니다.
+                        ⏰ {app.shuttleTime}에 {app.selectedPickupSchool || app.pickupLocation}에서 출발합니다!<br/>
+                        🚌 정시 출발하니 5분 전에 도착해주세요.
                       </div>
                     </div>
                   )}
