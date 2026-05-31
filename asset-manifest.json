@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/-.app/static/css/main.bb4e35b4.css",
-    "main.js": "/-.app/static/js/main.e271380a.js",
-    "index.html": "/-.app/index.html",
-    "main.bb4e35b4.css.map": "/-.app/static/css/main.bb4e35b4.css.map",
-    "main.e271380a.js.map": "/-.app/static/js/main.e271380a.js.map"
+    "main.css": "/gongd.app/static/css/main.bb4e35b4.css",
+    "main.js": "/gongd.app/static/js/main.c040c666.js",
+    "index.html": "/gongd.app/index.html",
+    "main.bb4e35b4.css.map": "/gongd.app/static/css/main.bb4e35b4.css.map",
+    "main.c040c666.js.map": "/gongd.app/static/js/main.c040c666.js.map"
   },
   "entrypoints": [
     "static/css/main.bb4e35b4.css",
-    "static/js/main.e271380a.js"
+    "static/js/main.c040c666.js"
   ]
 }
