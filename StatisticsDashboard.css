@@ -1,0 +1,454 @@
+.statistics-dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+.statistics-dashboard h1 {
+  text-align: center;
+  font-size: 2.5em;
+  color: #1a237e;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 1.1em;
+  color: #555;
+  margin-bottom: 40px;
+  font-weight: 500;
+}
+
+/* 차트 섹션 */
+.chart-section {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #2196f3;
+}
+
+.chart-header {
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.chart-header h2 {
+  color: #1a237e;
+  font-size: 1.8em;
+  margin: 0 0 8px 0;
+}
+
+.description {
+  color: #666;
+  font-size: 0.95em;
+  margin: 0;
+}
+
+/* 데이터 테이블 */
+.data-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+
+.data-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.data-table th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.data-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e0e0e0;
+  color: #333;
+}
+
+.data-table tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+.data-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.data-table tr.highlight {
+  background-color: #fff3e0;
+  font-weight: 500;
+}
+
+.data-table tr.warning {
+  background-color: #ffebee;
+}
+
+.data-table tr.critical {
+  background-color: #ffcdd2;
+  font-weight: 600;
+}
+
+/* Insights 박스 */
+.insights {
+  background: linear-gradient(135deg, #fff9e6 0%, #ffe0b2 100%);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  border-left: 4px solid #ff9800;
+}
+
+.insights h4 {
+  color: #e65100;
+  margin: 0 0 12px 0;
+  font-size: 1.1em;
+}
+
+.insights ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.insights li {
+  padding: 8px 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+.insights li strong {
+  color: #d84315;
+}
+
+/* 추천 그리드 */
+.recommendation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.recommendation-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  border: 2px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.recommendation-card.priority-55 {
+  border-left: 5px solid #d32f2f;
+  background: #ffebee;
+}
+
+.recommendation-card.priority-58 {
+  border-left: 5px solid #f57c00;
+  background: #fff3e0;
+}
+
+.recommendation-card.priority-65 {
+  border-left: 5px solid #fbc02d;
+  background: #fffde7;
+}
+
+.recommendation-card.priority-72 {
+  border-left: 5px solid #0097a7;
+}
+
+.recommendation-card.priority-78 {
+  border-left: 5px solid #388e3c;
+}
+
+.recommendation-card h3 {
+  margin: 0 0 15px 0;
+  color: #1a237e;
+  font-size: 1.3em;
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 10px;
+}
+
+.metric:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.metric .label {
+  font-size: 0.85em;
+  color: #666;
+  font-weight: 500;
+}
+
+.metric .value {
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #1a237e;
+}
+
+.metric .priority {
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.action {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.badge-priority {
+  background: #ffcdd2;
+  color: #d32f2f;
+}
+
+.badge-normal {
+  background: #c8e6c9;
+  color: #388e3c;
+}
+
+/* 우선순위 박스 */
+.priority-box {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  border-left: 4px solid #1976d2;
+}
+
+.priority-box h4 {
+  color: #0d47a1;
+  margin: 0 0 12px 0;
+  font-size: 1.1em;
+}
+
+.priority-box ol {
+  margin: 0;
+  padding-left: 20px;
+  color: #555;
+}
+
+.priority-box li {
+  padding: 8px 0;
+  line-height: 1.6;
+}
+
+.priority-box strong {
+  color: #d32f2f;
+}
+
+/* 요약 섹션 */
+.summary-section {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.summary-section h2 {
+  color: #1a237e;
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.conclusion-box {
+  background: linear-gradient(135deg, #f3e5f5 0%, #ede7f6 100%);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-left: 4px solid #7b1fa2;
+}
+
+.conclusion-box h4 {
+  color: #4a148c;
+  margin: 0 0 15px 0;
+  font-size: 1.1em;
+}
+
+.conclusion-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.conclusion-box li {
+  padding: 10px 0;
+  color: #555;
+  line-height: 1.8;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.conclusion-box li:last-child {
+  border-bottom: none;
+}
+
+.solution-box {
+  background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+  border-radius: 8px;
+  padding: 20px;
+  border-left: 4px solid #2e7d32;
+}
+
+.solution-box h4 {
+  color: #1b5e20;
+  margin: 0 0 15px 0;
+  font-size: 1.1em;
+}
+
+.solution-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.solution-table thead {
+  background: #2e7d32;
+  color: white;
+}
+
+.solution-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.solution-table td {
+  padding: 12px;
+  border-bottom: 1px solid #c8e6c9;
+  color: #333;
+}
+
+.solution-table tr.critical {
+  background: #ffebee;
+  font-weight: 500;
+}
+
+.solution-table tr.critical td {
+  border-bottom: 1px solid #ffcdd2;
+}
+
+.text-small {
+  font-size: 0.85em;
+  color: #888;
+}
+
+/* 점수 배지 */
+.score-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 1em;
+  color: white;
+}
+
+.score-55 {
+  background: #d32f2f;
+}
+
+.score-58 {
+  background: #f57c00;
+}
+
+.score-65 {
+  background: #fbc02d;
+  color: #333;
+}
+
+.score-72 {
+  background: #0097a7;
+}
+
+.score-78 {
+  background: #388e3c;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .statistics-dashboard {
+    padding: 20px 10px;
+  }
+
+  .statistics-dashboard h1 {
+    font-size: 1.8em;
+  }
+
+  .chart-section {
+    padding: 20px;
+  }
+
+  .recommendation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .data-table {
+    font-size: 0.85em;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 8px 10px;
+  }
+}
+
+/* 애니메이션 */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chart-section {
+  animation: slideIn 0.5s ease-out;
+}
+
+.data-table tbody tr {
+  animation: slideIn 0.5s ease-out;
+}
+
+/* Recharts 커스�마이징 */
+.recharts-text {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.recharts-legend-wrapper {
+  padding-top: 20px !important;
+}
+
+.recharts-default-tooltip {
+  outline: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
