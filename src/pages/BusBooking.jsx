@@ -58,7 +58,7 @@ function BusBooking() {
                     <p>🎯 <strong>관심분야:</strong> {app.interests.join(', ')}</p>
                     <p>📝 <strong>신청 프로그램:</strong> {app.appliedProgram.name}</p>
                     <p>🚩 <strong>프로그램 위치:</strong> {app.appliedProgram.location}</p>
-                    <p>🕐 <strong>신청일시:</strong> {app.appliedAt}</p>
+                    <p>🕐 <strong>신청일시:</strong> {app.appliedAtDisplay || new Date(app.appliedAt).toLocaleString()}</p>
                   </div>
 
                   {/* 상태별 UI */}
@@ -145,10 +145,18 @@ function CountdownTimer({ appliedAt, onTimeUp }) {
   const [timeLeft, setTimeLeft] = useState('계산중...');
 
   useEffect(() => {
+    // appliedAt이 타임스탬프인 경우와 문자열인 경우 모두 처리
+    let appliedTime;
+    if (typeof appliedAt === 'number') {
+      appliedTime = appliedAt;
+    } else {
+      // ISO 형식이나 로케일 형식 문자열을 타임스탬프로 변환
+      appliedTime = new Date(appliedAt).getTime();
+    }
+
     const timer = setInterval(() => {
-      const applied = new Date(appliedAt);
-      const now = new Date();
-      const diff = 24 * 60 * 60 * 1000 - (now - applied);
+      const now = Date.now();
+      const diff = 24 * 60 * 60 * 1000 - (now - appliedTime);
 
       if (diff <= 0) {
         setTimeLeft('곧 발표됩니다!');

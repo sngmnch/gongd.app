@@ -435,16 +435,18 @@ function ShuttleApplicationForm({ onClose, programs }) {
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
 
     // 결과 저장
+    const now = Date.now();
     const applicationResult = {
-      id: Date.now(),
+      id: now,
       studentName: formData.name,
       studentPhone: formData.phone,
       school: formData.school,
       interests: formData.interests,
       appliedProgram: formData.selectedProgram,
       selectedPickupSchool: formData.selectedPickupSchool,
-      appliedAt: new Date().toLocaleString(),
-      resultDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toLocaleString(),
+      appliedAt: now,
+      appliedAtDisplay: new Date(now).toLocaleString(),
+      resultDate: new Date(now + 24 * 60 * 60 * 1000).toLocaleString(),
       status: 'pending', // pending -> confirmed/rejected
       shuttleTime: null,
       pickupLocation: formData.selectedPickupSchool,
