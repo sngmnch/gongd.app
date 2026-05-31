@@ -12,11 +12,25 @@ function MyPage() {
     region: '',
     interests: [],
   });
+  const [portfolioFile, setPortfolioFile] = useState(null);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [selectedFeedbackProgram, setSelectedFeedbackProgram] = useState(null);
+  const [feedback, setFeedback] = useState({
+    interest: 5,
+    difficulty: 'normal',
+    satisfaction: 'satisfied',
+    comment: '',
+  });
 
   useEffect(() => {
     const saved = localStorage.getItem('userProfile');
     if (saved) {
       setProfile(JSON.parse(saved));
+    }
+    // 생기부 파일 로드
+    const savedPortfolio = localStorage.getItem('userPortfolio');
+    if (savedPortfolio) {
+      setPortfolioFile(JSON.parse(savedPortfolio));
     }
   }, []);
 
@@ -37,6 +51,47 @@ function MyPage() {
       alert('로그아웃되었습니다.');
       navigate('/');
     }
+  };
+
+  const handlePortfolioUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const fileData = {
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          uploadedAt: new Date().toLocaleString(),
+        };
+        localStorage.setItem('userPortfolio', JSON.stringify(fileData));
+        setPortfolioFile(fileData);
+        alert('생기부가 업로드되었습니다.');
+      };
+      reader.readAsArrayBuffer(file);
+    }
+  };
+
+  const handleFeedbackSubmit = () => {
+    if (!selectedFeedbackProgram) return;
+
+    const feedbackData = {
+      programId: selectedFeedbackProgram.id,
+      programName: selectedFeedbackProgram.name,
+      interest: feedback.interest,
+      difficulty: feedback.difficulty,
+      satisfaction: feedback.satisfaction,
+      comment: feedback.comment,
+      submittedAt: new Date().toLocaleString(),
+    };
+
+    const existing = JSON.parse(localStorage.getItem('programFeedback') || '[]');
+    localStorage.setItem('programFeedback', JSON.stringify([...existing, feedbackData]));
+
+    alert('후기가 저장되었습니다. 감사합니다!');
+    setShowFeedbackModal(false);
+    setFeedback({ interest: 5, difficulty: 'normal', satisfaction: 'satisfied', comment: '' });
+    setSelectedFeedbackProgram(null);
   };
 
   const myBookings = [
@@ -159,6 +214,61 @@ function MyPage() {
           )}
         </section>
 
+        {/* 📄 생기부 관리 */}
+        <section className="profile-card">
+          <h2>📄 생기부 관리</h2>
+          <div style={{ background: '#f0f4ff', padding: '15px', borderRadius: '8px', marginBottom: '15px' }}>
+            <p style={{ margin: '0 0 10px 0', fontSize: '0.9em', color: '#1565c0' }}>
+              📎 파일을 업로드하면 AI가 당신의 활동을 분석합니다.
+            </p>
+            {portfolioFile ? (
+              <div style={{ background: 'white', padding: '12px', borderRadius: '6px', marginBottom: '10px' }}>
+                ✅ <strong>{portfolioFile.name}</strong> (업로드됨)<br/>
+                <span style={{ fontSize: '0.85em', color: '#999' }}>
+                  {portfolioFile.uploadedAt}
+                </span>
+              </div>
+            ) : (
+              <p style={{ margin: '0', fontSize: '0.9em', color: '#666' }}>아직 업로드된 파일이 없습니다.</p>
+            )}
+          </div>
+          <label style={{
+            display: 'block',
+            padding: '15px',
+            background: '#f5f5f5',
+            border: '2px dashed #667eea',
+            borderRadius: '8px',
+            textAlign: 'center',
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+            marginBottom: '15px'
+          }}>
+            📁 파일 선택 및 업로드 (PDF/JPG/PNG)
+            <input
+              type="file"
+              onChange={handlePortfolioUpload}
+              accept=".pdf,.jpg,.jpeg,.png"
+              style={{ display: 'none' }}
+            />
+          </label>
+          <button
+            className="btn-secondary"
+            onClick={() => {
+              if (portfolioFile) {
+                if (window.confirm('생기부를 삭제하시겠습니까?')) {
+                  localStorage.removeItem('userPortfolio');
+                  setPortfolioFile(null);
+                  alert('생기부가 삭제되었습니다.');
+                }
+              }
+            }}
+            style={{ width: '100%' }}
+            disabled={!portfolioFile}
+          >
+            생기부 삭제
+          </button>
+        </section>
+
         {/* 참여 현황 */}
         <section className="stats-section">
           <h2>📊 참여 현황</h2>
@@ -199,12 +309,189 @@ function MyPage() {
                   {booking.status === '예정' && (
                     <button className="btn-secondary">취소</button>
                   )}
+                  {booking.status === '완료' && (
+                    <button
+                      className="btn-primary"
+                      onClick={() => {
+                        setSelectedFeedbackProgram({ id: booking.id, name: booking.program });
+                        setShowFeedbackModal(true);
+                      }}
+                    >
+                      후기 작성
+                    </button>
+                  )}
                 </div>
               ))
             )}
           </div>
         </section>
       </div>
+
+      {/* 활동 후기 작성 모달 */}
+      {showFeedbackModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'flex-end',
+            zIndex: 1000,
+          }}
+          onClick={() => setShowFeedbackModal(false)}
+        >
+          <div
+            style={{
+              width: '100%',
+              background: 'white',
+              borderRadius: '12px 12px 0 0',
+              padding: '20px',
+              maxHeight: '80vh',
+              overflowY: 'auto',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 style={{ marginTop: 0, marginBottom: '15px' }}>📝 활동 후기 작성</h2>
+            <p style={{ color: '#666', marginBottom: '20px' }}>
+              <strong>{selectedFeedbackProgram?.name}</strong>에 대한 후기를 남겨주세요.
+            </p>
+
+            {/* 흥미도 */}
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+                1️⃣ 흥미도
+              </label>
+              <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    onClick={() => setFeedback({ ...feedback, interest: star })}
+                    style={{
+                      fontSize: '2em',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      opacity: star <= feedback.interest ? 1 : 0.3,
+                      transition: 'all 0.2s',
+                    }}
+                  >
+                    ⭐
+                  </button>
+                ))}
+              </div>
+              <p style={{ textAlign: 'center', color: '#999', fontSize: '0.9em', margin: '8px 0 0 0' }}>
+                {feedback.interest}점
+              </p>
+            </div>
+
+            {/* 난이도 */}
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+                2️⃣ 난이도
+              </label>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+                {[
+                  { value: 'easy', label: '쉬워요' },
+                  { value: 'normal', label: '적당해요' },
+                  { value: 'hard', label: '어려워요' },
+                ].map((opt) => (
+                  <button
+                    key={opt.value}
+                    onClick={() => setFeedback({ ...feedback, difficulty: opt.value })}
+                    style={{
+                      padding: '10px',
+                      borderRadius: '6px',
+                      border: feedback.difficulty === opt.value ? '2px solid #667eea' : '1px solid #ddd',
+                      background: feedback.difficulty === opt.value ? '#667eea' : '#f5f5f5',
+                      color: feedback.difficulty === opt.value ? 'white' : '#333',
+                      cursor: 'pointer',
+                      fontWeight: feedback.difficulty === opt.value ? '600' : '400',
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 만족도 */}
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+                3️⃣ 만족도
+              </label>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                {[
+                  { value: 'very_satisfied', label: '매우 만족' },
+                  { value: 'satisfied', label: '만족' },
+                  { value: 'normal', label: '보통' },
+                  { value: 'dissatisfied', label: '불만족' },
+                ].map((opt) => (
+                  <button
+                    key={opt.value}
+                    onClick={() => setFeedback({ ...feedback, satisfaction: opt.value })}
+                    style={{
+                      padding: '10px',
+                      borderRadius: '6px',
+                      border: feedback.satisfaction === opt.value ? '2px solid #667eea' : '1px solid #ddd',
+                      background: feedback.satisfaction === opt.value ? '#667eea' : '#f5f5f5',
+                      color: feedback.satisfaction === opt.value ? 'white' : '#333',
+                      cursor: 'pointer',
+                      fontWeight: feedback.satisfaction === opt.value ? '600' : '400',
+                      fontSize: '0.9em',
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 후기 텍스트 */}
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+                4️⃣ 후기 (선택)
+              </label>
+              <textarea
+                value={feedback.comment}
+                onChange={(e) => setFeedback({ ...feedback, comment: e.target.value })}
+                placeholder="이 프로그램에서 배운 점, 좋았던 점 등을 자유롭게 써주세요."
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  borderRadius: '6px',
+                  border: '1px solid #ddd',
+                  fontFamily: 'inherit',
+                  fontSize: '0.95em',
+                  minHeight: '100px',
+                  boxSizing: 'border-box',
+                  resize: 'vertical',
+                }}
+              />
+            </div>
+
+            {/* 버튼 */}
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                className="btn-secondary"
+                onClick={() => setShowFeedbackModal(false)}
+                style={{ flex: 1 }}
+              >
+                취소
+              </button>
+              <button
+                className="btn-primary"
+                onClick={handleFeedbackSubmit}
+                style={{ flex: 1 }}
+              >
+                후기 저장
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <nav className="bottom-nav">
         <button className="nav-btn" onClick={() => navigate('/')}>

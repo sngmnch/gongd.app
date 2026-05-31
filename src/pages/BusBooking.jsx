@@ -56,7 +56,8 @@ function BusBooking() {
                   <div className="card-info">
                     <p>📍 <strong>학교:</strong> {app.school}</p>
                     <p>🎯 <strong>관심분야:</strong> {app.interests.join(', ')}</p>
-                    <p>📝 <strong>추천 프로그램:</strong> {app.appliedProgram.name}</p>
+                    <p>📝 <strong>신청 프로그램:</strong> {app.appliedProgram.name}</p>
+                    <p>🚩 <strong>프로그램 위치:</strong> {app.appliedProgram.location}</p>
                     <p>🕐 <strong>신청일시:</strong> {app.appliedAt}</p>
                   </div>
 
@@ -75,16 +76,34 @@ function BusBooking() {
                     </div>
                   ) : (
                     <div className="confirmed-state">
-                      <div className="success-box">
-                        <h4>✨ 셔틀 배정 완료!</h4>
-                        <div className="shuttle-details">
-                          <p>🚌 <strong>픽업:</strong> {app.pickupLocation} {app.shuttleTime}</p>
-                          <p>🎯 <strong>목적지:</strong> {app.appliedProgram.location}</p>
-                          <p>📞 <strong>연락:</strong> {app.studentPhone}</p>
+                      <div className="success-box" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white', padding: '20px', borderRadius: '8px', marginBottom: '15px' }}>
+                        <h4 style={{ margin: '0 0 15px 0', fontSize: '1.3em' }}>✨ 셔틀 배정 완료!</h4>
+                        <div className="shuttle-details" style={{ background: 'rgba(255,255,255,0.1)', padding: '15px', borderRadius: '6px' }}>
+                          <p style={{ margin: '8px 0', fontSize: '1em' }}>
+                            <strong>📍 픽업 위치</strong><br/>
+                            {app.selectedPickupSchool || app.pickupLocation}
+                          </p>
+                          <p style={{ margin: '8px 0', fontSize: '1em' }}>
+                            <strong>🕐 픽업 시간</strong><br/>
+                            {app.shuttleTime || '결정 예정'}
+                          </p>
+                          <p style={{ margin: '8px 0', fontSize: '1em' }}>
+                            <strong>🎯 목적지</strong><br/>
+                            {app.appliedProgram.location}
+                          </p>
+                          <p style={{ margin: '8px 0', fontSize: '1em' }}>
+                            <strong>📝 프로그램</strong><br/>
+                            {app.appliedProgram.name}
+                          </p>
+                          <p style={{ margin: '8px 0', fontSize: '1em' }}>
+                            <strong>📞 연락처</strong><br/>
+                            {app.studentPhone}
+                          </p>
                         </div>
                       </div>
-                      <div className="reminder-box">
-                        ⏰ 신청하신 시간에 학교에서 기다려주세요!
+                      <div className="reminder-box" style={{ background: '#fff3cd', padding: '12px', borderRadius: '8px', border: '1px solid #ffc107', color: '#333' }}>
+                        ⏰ 신청하신 시간에 {app.selectedPickupSchool || app.pickupLocation}에서 대기해주세요!<br/>
+                        📍 정확한 픽업 위치는 며칠 전에 안내됩니다.
                       </div>
                     </div>
                   )}

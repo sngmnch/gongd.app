@@ -46,21 +46,34 @@ function Home() {
     setSetupSelectedDistrict('');
   };
 
-  // 13개 프로그램 (정확한 데이터 기반 - 각 연구단지별 프로그램)
+  // 13개 프로그램 (각 프로그램별 픽업 학교 포함)
   const programs = [
-    { id: 1, name: '로봇 만들기', location: '대전과학고', lat: 36.3512, lng: 127.3815, tag: '로봇' },
-    { id: 2, name: 'AI 및 미래기술 체험', location: '대전시립과학관', lat: 36.3332, lng: 127.4243, tag: 'AI' },
-    { id: 3, name: 'ETRI 정보통신 투어', location: '한국전자통신연구원(ETRI)', lat: 36.3660, lng: 127.4090, tag: '과학' },
-    { id: 4, name: '화학 실험실 및 분석', location: '한국화학연구원', lat: 36.3625, lng: 127.4100, tag: '화학' },
-    { id: 5, name: '기계공학 체험', location: '한국기계연구원', lat: 36.3645, lng: 127.4080, tag: '기술' },
-    { id: 6, name: '생명공학 기초 이해', location: '한국생명공학연구원', lat: 36.3610, lng: 127.4120, tag: '과학' },
-    { id: 7, name: '신재생에너지와 미래', location: '에너지 연구소', lat: 36.3640, lng: 127.4050, tag: '과학' },
-    { id: 8, name: '원자력 에너지 이해', location: '한국원자력연구원', lat: 36.3655, lng: 127.4110, tag: '과학' },
-    { id: 9, name: '나노기술 세상', location: '한국표준과학연구원', lat: 36.3630, lng: 127.4070, tag: '과학' },
-    { id: 10, name: 'KIST 다양성 체험', location: '한국과학기술연구원(KIST)', lat: 36.3620, lng: 127.3980, tag: '과학' },
-    { id: 11, name: '3D 프린팅 및 설계', location: '대전시 기술혁신지원센터', lat: 36.3690, lng: 127.3700, tag: '기술' },
-    { id: 12, name: '로봇공학 심화 과정', location: '대전로봇산업클러스터', lat: 36.3550, lng: 127.3900, tag: '로봇' },
-    { id: 13, name: '환경 및 수처리 기술', location: '물 연구센터', lat: 36.3700, lng: 127.3800, tag: '과학' },
+    { id: 1, name: '로봇 만들기', location: '대전과학고', lat: 36.3512, lng: 127.3815, tag: '로봇',
+      pickupSchools: ['대전중학교', '대전고등학교', '과학고등학교', '한밭중학교', '과학중학교'] },
+    { id: 2, name: 'AI 및 미래기술 체험', location: '대전시립과학관', lat: 36.3332, lng: 127.4243, tag: 'AI',
+      pickupSchools: ['중앙중학교', '중앙고등학교', '영신중학교', '중앙여고', '동문고등학교'] },
+    { id: 3, name: 'ETRI 정보통신 투어', location: '한국전자통신연구원(ETRI)', lat: 36.3660, lng: 127.4090, tag: '과학',
+      pickupSchools: ['유성중학교', '유성고등학교', '대덕중학교', '과학영재고', '서구중학교'] },
+    { id: 4, name: '화학 실험실 및 분석', location: '한국화학연구원', lat: 36.3625, lng: 127.4100, tag: '화학',
+      pickupSchools: ['한밭중학교', '한밭고등학교', '대전과학고', '화학고등학교', '실험중학교'] },
+    { id: 5, name: '기계공학 체험', location: '한국기계연구원', lat: 36.3645, lng: 127.4080, tag: '기술',
+      pickupSchools: ['대덕중학교', '대덕고등학교', '기술중학교', '공학고등학교', '동구중학교'] },
+    { id: 6, name: '생명공학 기초 이해', location: '한국생명공학연구원', lat: 36.3610, lng: 127.4120, tag: '과학',
+      pickupSchools: ['과학중학교', '생명과학고', '자연중학교', '녹색중학교', '산업고등학교'] },
+    { id: 7, name: '신재생에너지와 미래', location: '에너지 연구소', lat: 36.3640, lng: 127.4050, tag: '과학',
+      pickupSchools: ['에너지중학교', '에너지고등학교', '미래중학교', '친환경중학교', '녹색고등학교'] },
+    { id: 8, name: '원자력 에너지 이해', location: '한국원자력연구원', lat: 36.3655, lng: 127.4110, tag: '과학',
+      pickupSchools: ['과학중학교', '원자력고등학교', '실험중학교', '대덕중학교', '과학고등학교'] },
+    { id: 9, name: '나노기술 세상', location: '한국표준과학연구원', lat: 36.3630, lng: 127.4070, tag: '과학',
+      pickupSchools: ['나노중학교', '나노고등학교', '표준과학중', '기술중학교', '미래고등학교'] },
+    { id: 10, name: 'KIST 다양성 체험', location: '한국과학기술연구원(KIST)', lat: 36.3620, lng: 127.3980, tag: '과학',
+      pickupSchools: ['KIST중학교', 'KIST고등학교', '과학중학교', '기술고등학교', '미래중학교'] },
+    { id: 11, name: '3D 프린팅 및 설계', location: '대전시 기술혁신지원센터', lat: 36.3690, lng: 127.3700, tag: '기술',
+      pickupSchools: ['기술중학교', '3D고등학교', '설계중학교', '디자인중학교', '공학고등학교'] },
+    { id: 12, name: '로봇공학 심화 과정', location: '대전로봇산업클러스터', lat: 36.3550, lng: 127.3900, tag: '로봇',
+      pickupSchools: ['로봇중학교', '로봇고등학교', '공학중학교', '산업중학교', '기술고등학교'] },
+    { id: 13, name: '환경 및 수처리 기술', location: '물 연구센터', lat: 36.3700, lng: 127.3800, tag: '과학',
+      pickupSchools: ['환경중학교', '환경고등학교', '녹색중학교', '친환경고', '수처리중학교'] },
   ];
 
   // 5개 구의 정확한 중심 좌표 (중학교 데이터 기반) - 새로운 점수 공식 적용
@@ -377,6 +390,8 @@ function ShuttleApplicationForm({ onClose, programs }) {
     region: savedProfile.region || '',
     interests: savedProfile.interests || [],
     location: { lat: 36.33, lng: 127.39 },
+    selectedProgram: null,
+    selectedPickupSchool: null,
   });
 
   // 학교 리스트는 선택된 구별로 필터링
@@ -403,7 +418,7 @@ function ShuttleApplicationForm({ onClose, programs }) {
   };
 
   const handleSubmit = async () => {
-    if (!formData.name || !formData.phone || !formData.school || formData.interests.length === 0) {
+    if (!formData.name || !formData.phone || !formData.school || !formData.selectedProgram || !formData.selectedPickupSchool) {
       alert('모든 항목을 입력해주세요');
       return;
     }
@@ -419,9 +434,6 @@ function ShuttleApplicationForm({ onClose, programs }) {
     };
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
 
-    // 알고리즘 실행: 학생 위치 + 관심분야 -> 최적 프로그램 매칭
-    const matchedProgram = findBestProgram(formData, programs);
-
     // 결과 저장
     const applicationResult = {
       id: Date.now(),
@@ -429,19 +441,20 @@ function ShuttleApplicationForm({ onClose, programs }) {
       studentPhone: formData.phone,
       school: formData.school,
       interests: formData.interests,
-      appliedProgram: matchedProgram,
+      appliedProgram: formData.selectedProgram,
+      selectedPickupSchool: formData.selectedPickupSchool,
       appliedAt: new Date().toLocaleString(),
       resultDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toLocaleString(),
       status: 'pending', // pending -> confirmed/rejected
       shuttleTime: null,
-      pickupLocation: null,
+      pickupLocation: formData.selectedPickupSchool,
     };
 
     // localStorage에 저장
     const existing = JSON.parse(localStorage.getItem('shuttleApplications') || '[]');
     localStorage.setItem('shuttleApplications', JSON.stringify([...existing, applicationResult]));
 
-    alert(`신청이 완료되었습니다!\n\n신청 프로그램: ${matchedProgram.name}\n결과는 24시간 뒤 확인하세요.`);
+    alert(`신청이 완료되었습니다!\n\n신청 프로그램: ${formData.selectedProgram.name}\n픽업 위치: ${formData.selectedPickupSchool}\n결과는 24시간 뒤 확인하세요.`);
 
     onClose();
     navigate('/buses');
@@ -562,7 +575,99 @@ function ShuttleApplicationForm({ onClose, programs }) {
           </div>
           <div className="form-actions">
             <button className="btn-secondary" onClick={() => setStep(2)}>이전</button>
-            <button className="btn-primary" onClick={handleSubmit} disabled={formData.interests.length === 0}>
+            <button className="btn-primary" onClick={() => setStep(4)} disabled={formData.interests.length === 0}>
+              다음
+            </button>
+          </div>
+        </div>
+      )}
+
+      {step === 4 && (
+        <div className="form-step">
+          <h2>📍 프로그램 선택</h2>
+          <p style={{ color: '#666', fontSize: '0.9em', marginBottom: '15px' }}>
+            관심분야에 맞는 프로그램을 선택하고 픽업 위치를 지정해주세요.
+          </p>
+
+          {/* 필터링된 프로그램 목록 */}
+          <div style={{ maxHeight: '500px', overflowY: 'auto', border: '1px solid #ddd', borderRadius: '8px', padding: '10px', marginBottom: '20px' }}>
+            {programs
+              .filter(p => formData.interests.includes(p.tag))
+              .map(program => (
+                <div
+                  key={program.id}
+                  className="program-card"
+                  style={{
+                    padding: '12px',
+                    marginBottom: '12px',
+                    border: formData.selectedProgram?.id === program.id ? '2px solid #667eea' : '1px solid #ddd',
+                    borderRadius: '8px',
+                    background: formData.selectedProgram?.id === program.id ? '#f0f4ff' : '#fff',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                  }}
+                  onClick={() => {
+                    setFormData({ ...formData, selectedProgram: program, selectedPickupSchool: null });
+                  }}
+                >
+                  <h4 style={{ margin: '0 0 8px 0', color: '#333' }}>{program.name}</h4>
+                  <p style={{ margin: '4px 0', fontSize: '0.9em', color: '#666' }}>
+                    📍 {program.location}
+                  </p>
+                  <p style={{ margin: '4px 0', fontSize: '0.85em', color: '#999' }}>
+                    분야: <strong>{program.tag}</strong>
+                  </p>
+
+                  {/* 픽업 학교 선택 (프로그램 선택 후에만 표시) */}
+                  {formData.selectedProgram?.id === program.id && (
+                    <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid #ddd' }}>
+                      <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', fontSize: '0.9em', color: '#333' }}>
+                        📍 픽업 위치 선택:
+                      </label>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                        {program.pickupSchools.map((school, idx) => (
+                          <button
+                            key={idx}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setFormData({ ...formData, selectedPickupSchool: school });
+                            }}
+                            style={{
+                              padding: '8px',
+                              borderRadius: '6px',
+                              border: formData.selectedPickupSchool === school ? '2px solid #667eea' : '1px solid #ddd',
+                              background: formData.selectedPickupSchool === school ? '#667eea' : '#f5f5f5',
+                              color: formData.selectedPickupSchool === school ? 'white' : '#333',
+                              cursor: 'pointer',
+                              fontSize: '0.85em',
+                              fontWeight: formData.selectedPickupSchool === school ? '600' : '400',
+                            }}
+                          >
+                            {school}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+          </div>
+
+          {/* 선택 요약 */}
+          {formData.selectedProgram && formData.selectedPickupSchool && (
+            <div style={{ background: '#f0f4ff', padding: '12px', borderRadius: '8px', marginBottom: '20px' }}>
+              ✅ <strong>{formData.selectedProgram.name}</strong> 선택<br/>
+              📍 픽업: <strong>{formData.selectedPickupSchool}</strong>
+            </div>
+          )}
+
+          <div className="form-actions">
+            <button className="btn-secondary" onClick={() => setStep(3)}>이전</button>
+            <button
+              className="btn-primary"
+              onClick={handleSubmit}
+              disabled={!formData.selectedProgram || !formData.selectedPickupSchool}
+            >
               신청 완료
             </button>
           </div>
